@@ -12,6 +12,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
@@ -22,6 +23,11 @@
         </Grid.ColumnDefinitions>
 
         <Button Grid.Column="0" Grid.Row="0" Name="button1" Content="All Tasks" Click="button1_Click" Height="30" VerticalAlignment="Top"/>
-
+        <Button Grid.Column="0" Grid.Row="1" Name="button2" Content="Running Tasks" Height="30" VerticalAlignment="Top" Click="button2_Click"/>
+        <Button Grid.Column="0" Grid.Row="2" Name="button3" Content="Pending Tasks" Height="30" VerticalAlignment="Top" Click="button3_Click"/>
+        <Button Grid.Column="0" Grid.Row="3" Name="button4" Content="PGS" Click="button4_Click" Height="30" VerticalAlignment="Top"/>
+        <Button Grid.Column="0" Grid.Row="4" Name="button5" Content="DSS" Click="button5_Click"/>
+        
+       
     </Grid>
 </Window>
