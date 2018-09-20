@@ -27,7 +27,9 @@
         <Button Grid.Column="0" Grid.Row="2" Name="button3" Content="Pending Tasks" Height="30" VerticalAlignment="Top" Click="button3_Click"/>
         <Button Grid.Column="0" Grid.Row="3" Name="button4" Content="PGS" Click="button4_Click" Height="30" VerticalAlignment="Top"/>
         <Button Grid.Column="0" Grid.Row="4" Name="button5" Content="DSS" Click="button5_Click"/>
-        
-       
+
+        <Button Grid.Column="1" Grid.Row="0" Name="button6" Content="FY Hosts" Click="button6_Click"/>
+
+        <Button Grid.Column="2" Grid.Row="0" Name="button7" Content="Get Version and Server Name" Click="button7_Click"/>
     </Grid>
 </Window>
