@@ -31,5 +31,7 @@
         <Button Grid.Column="1" Grid.Row="0" Name="button6" Content="FY Hosts" Click="button6_Click"/>
 
         <Button Grid.Column="2" Grid.Row="0" Name="button7" Content="Get Version and Server Name" Click="button7_Click"/>
+
+        <TextBox Grid.Column="2" Grid.Row="5" Name="textbox1"/>
     </Grid>
 </Window>

@@ -49,57 +49,37 @@ namespace FY
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            this.textbox1.Clear();
+
             int totalTasks = 0;
-            
-            FileStream fs = new FileStream(fyjobspath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
 
-            using(Process p = new Process())
-            {
-                string cmd = "ping www.baidu.com" + "&exit";
+            StreamReader streamReader;
+            getReader("fyjobs", out streamReader);
 
-                p.StartInfo.FileName = "cmd.exe";
-                p.StartInfo.UseShellExecute = false;        //是否使用操作系统shell启动
-                p.StartInfo.RedirectStandardInput = true;   //接受来自调用程序的输入信息
-                p.StartInfo.RedirectStandardOutput = true;  //由调用程序获取输出信息
-                p.StartInfo.RedirectStandardError = true;   //重定向标准错误输出
-                p.StartInfo.CreateNoWindow = true;          //不显示程序窗口
-                p.Start();//启动程序
-                //向cmd窗口写入命令
-                p.StandardInput.WriteLine(cmd);
-                p.StandardInput.AutoFlush = true;
-                
-                //获取cmd窗口的输出信息
-                StreamReader reader = p.StandardOutput;//截取输出流
-                string line = reader.ReadLine();//每次读取一行
-                
-                while (!reader.EndOfStream)
-                {
-                    Console.WriteLine(line);
-                    line = reader.ReadLine();
-                }
-                p.WaitForExit();//等待程序执行完退出进程
-                p.Close();
-            }
+            //去除表头
+            string s = streamReader.ReadLine();
 
-            //去除第一行的表头
-            string s = sr.ReadLine();
-            while ((s = sr.ReadLine())!= null){
+            while ((s = streamReader.ReadLine())!= null){
                 totalTasks++;
+                this.textbox1.Text += s + "\n";
             }
 
             Console.WriteLine(totalTasks);
+            this.textbox1.Text += totalTasks.ToString();
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            this.textbox1.Clear();
+
             int runningTasks = 0;
 
-            FileStream fs = new FileStream(fyjobspath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
+            StreamReader sr;
+            getReader("fyjobs", out sr);
 
             //去除表头
             string s = sr.ReadLine();
+
             while((s=sr.ReadLine())!=null)
             {
                 string[] splits = s.Split(' ');
@@ -116,17 +96,21 @@ namespace FY
             }
 
             Console.WriteLine(runningTasks);
+            this.textbox1.Text += runningTasks.ToString();
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)
         {
+            this.textbox1.Clear();
+
             int pendingTasks = 0;
 
-            FileStream fs = new FileStream(fyjobspath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
+            StreamReader sr;
+            getReader("fyjobs", out sr);
 
             //去除表头
             string s = sr.ReadLine();
+
             while ((s = sr.ReadLine()) != null)
             {
                 string[] splits = s.Split(' ');
@@ -143,17 +127,21 @@ namespace FY
             }
 
             Console.WriteLine(pendingTasks);
+            this.textbox1.Text += pendingTasks.ToString();
         }
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
+            this.textbox1.Clear();
+
             int PGSs = 0;
 
-            FileStream fs = new FileStream(fyjobspath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
+            StreamReader sr;
+            getReader("fyjobs", out sr);
 
             //去除表头
             string s = sr.ReadLine();
+
             while ((s = sr.ReadLine()) != null)
             {
                 string[] splits = s.Split(' ');
@@ -170,17 +158,21 @@ namespace FY
             }
 
             Console.WriteLine(PGSs);
+            this.textbox1.Text += PGSs.ToString();
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
+            this.textbox1.Clear();
+
             int DSSs = 0;
 
-            FileStream fs = new FileStream(fyjobspath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
+            StreamReader sr;
+            getReader("fyjobs", out sr);
 
             //去除表头
             string s = sr.ReadLine();
+
             while ((s = sr.ReadLine()) != null)
             {
                 string[] splits = s.Split(' ');
@@ -197,17 +189,20 @@ namespace FY
             }
 
             Console.WriteLine(DSSs);
+            this.textbox1.Text += DSSs.ToString();
         }
 
         private void button6_Click(object sender, RoutedEventArgs e)
         {
             ArrayList hosts = new ArrayList(hostsNeedToBeWatched);
 
-            FileStream fs = new FileStream(fyhostspath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
+            StreamReader sr;
+            getReader("fyhosts", out sr);
 
             //去除表头
             string s = sr.ReadLine();
+
+            this.textbox1.Clear();
             while ((s = sr.ReadLine()) != null)
             {
                 string[] splits = s.Split(' ');
@@ -220,17 +215,19 @@ namespace FY
                 }
 
                 string color = (al[1].Equals("ok") || ((string)al[1]).Contains("close")) ? "green" : "red";
+                //this.textbox1.Clear();
                 if (hosts.Contains(al[0]))
                 {
                     Console.WriteLine(al[0] + " " + color + " " + al[3] + " " + al[4]);
+                    this.textbox1.Text += al[0] + " " + color + " " + al[3] + " " + al[4]+"\n";
                 }
             }
         }
 
         private void button7_Click(object sender, RoutedEventArgs e)
         {
-            FileStream fs = new FileStream(fymetapath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
+            StreamReader sr;
+            getReader("fymaster", out sr);
 
             string version, server;
 
@@ -241,6 +238,41 @@ namespace FY
             server = line.Substring(line.IndexOf("is") + 3);
 
             Console.WriteLine(version + " " + server);
+            this.textbox1.Clear();
+            this.textbox1.Text = version + " " + server;
+        }
+
+        private void getReader(string cmd, out StreamReader streamReader)
+        {
+            using (Process p = new Process())
+            {
+                cmd = cmd + "&exit";
+
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.UseShellExecute = false;        //是否使用操作系统shell启动
+                p.StartInfo.RedirectStandardInput = true;   //接受来自调用程序的输入信息
+                p.StartInfo.RedirectStandardOutput = true;  //由调用程序获取输出信息
+                p.StartInfo.RedirectStandardError = true;   //重定向标准错误输出
+                p.StartInfo.CreateNoWindow = true;          //不显示程序窗口
+                p.Start();//启动程序
+                //向cmd窗口写入命令
+                p.StandardInput.WriteLine(cmd);
+                p.StandardInput.AutoFlush = true;
+
+                //获取cmd窗口;的输出信息
+                streamReader = p.StandardOutput;//截取输出流
+
+                //去除冗余信息
+                string line = streamReader.ReadLine();
+                for (int i = 0; i < 4; i++)
+                {
+                    this.textbox1.Text += line + "\n";
+                    line = streamReader.ReadLine();
+                }
+
+                p.WaitForExit();//等待程序执行完退出进程
+                p.Close();
+            }
         }
     }
 
